@@ -402,7 +402,7 @@ fn convert_line_rm() {
 fn convert_line_rm_no_prompt() {
     let output = convert_line("rm -f dir/file");
 
-    assert_eq!(output, "del /Q dir\\file");
+    assert_eq!(output, "del /Q dir\\file 2>nul || cd .");
 }
 
 #[test]
@@ -423,28 +423,35 @@ fn convert_line_rm_recursive() {
 fn convert_line_rm_no_prompt_and_recursive_v1() {
     let output = convert_line("rm -rf dir/file");
 
-    assert_eq!(output, "rmdir /S /Q dir\\file");
+    assert_eq!(output, "rmdir /S /Q dir\\file 2>nul || cd .");
 }
 
 #[test]
 fn convert_line_rm_no_prompt_and_recursive_v2() {
     let output = convert_line("rm -fr dir/file");
 
-    assert_eq!(output, "rmdir /S /Q dir\\file");
+    assert_eq!(output, "rmdir /S /Q dir\\file 2>nul || cd .");
 }
 
 #[test]
 fn convert_line_rm_no_prompt_and_recursive_v3() {
     let output = convert_line("rm -Rf dir/file");
 
-    assert_eq!(output, "rmdir /S /Q dir\\file");
+    assert_eq!(output, "rmdir /S /Q dir\\file 2>nul || cd .");
 }
 
 #[test]
 fn convert_line_rm_no_prompt_and_recursive_v4() {
     let output = convert_line("rm -fR dir/file");
 
-    assert_eq!(output, "rmdir /S /Q dir\\file");
+    assert_eq!(output, "rmdir /S /Q dir\\file 2>nul || cd .");
+}
+
+#[test]
+fn convert_line_rm_no_prompt_and_recursive_multiple_files() {
+    let output = convert_line("rm -rf dir/file1 dir/file2");
+
+    assert_eq!(output, "rmdir /S /Q dir\\file1 dir\\file2 2>nul || cd .");
 }
 
 #[test]

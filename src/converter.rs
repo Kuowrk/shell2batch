@@ -205,7 +205,20 @@ fn convert_line(line: &str) -> String {
                     vec![("-[fF] ", "/Q ")]
                 };
 
-                (win_cmd, flags_mappings, vec![], vec![], true)
+                // If there is a -f flag, add " 2>nul" to the end of the command to suppress errors,
+                //   and add " || cd ." as a lightweight command that always returns a success exit code.
+                let post_arguments = match Regex::new(r#"(?i)^-\S*f\S*"#) {
+                    Ok(regex_instance) => {
+                        if regex_instance.is_match(&arguments) {
+                            vec![" 2>nul || cd .".to_owned()]
+                        } else {
+                            vec![]
+                        }
+                    }
+                    Err(_) => vec![],
+                };
+
+                (win_cmd, flags_mappings, vec![], post_arguments, true)
             }
             "mkdir" => (
                 "mkdir".to_string(),

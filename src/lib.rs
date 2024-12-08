@@ -68,7 +68,7 @@
 //!set MY_DIR=directory
 //!
 //!@REM flags are supported
-//!rmdir /S /Q %MY_DIR%
+//!rmdir /S /Q %MY_DIR% 2>nul || cd .
 //!
 //!set MY_DIR=
 //!
@@ -152,7 +152,7 @@ mod converter;
 ///set MY_DIR=directory
 ///
 ///@REM flags are supported
-///rmdir /S /Q %MY_DIR%
+///rmdir /S /Q %MY_DIR% 2>nul || cd .
 ///
 ///set MY_DIR=
 ///
